@@ -1,21 +1,7 @@
 import type { Metadata } from "next";
-<<<<<<< HEAD
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-=======
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
->>>>>>> 1de0301 (Setting up authentication with Clerk)
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,20 +14,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-<<<<<<< HEAD
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
-=======
     <ClerkProvider>
       <html lang="en" data-theme="light">
         <body>{children}</body>
-      </html>{" "}
+      </html>
     </ClerkProvider>
->>>>>>> 1de0301 (Setting up authentication with Clerk)
   );
 }
