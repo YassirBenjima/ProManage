@@ -1,8 +1,9 @@
 import { Project } from "@/type";
 import { Copy, ExternalLink, FolderGit2, Trash } from "lucide-react";
 import Link from "next/link";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { toast } from "react-toastify";
+import ConfirmDialog from "./ConfirmDialog";
 
 interface ProjectProps {
   project: Project;
@@ -17,13 +18,19 @@ const ProjectComponent: FC<ProjectProps> = ({
   style,
   onDelete,
 }) => {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
   const handleDeleteClick = () => {
-    const isConfirmed = window.confirm(
-      "Are you sure you want to delete this project?"
-    );
-    if (isConfirmed && onDelete) {
-      onDelete(project.id);
-    }
+    setIsConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (onDelete) onDelete(project.id);
+    setIsConfirmOpen(false);
+  };
+
+  const handleCancelDelete = () => {
+    setIsConfirmOpen(false);
   };
 
   const totalTasks = project.tasks?.length;
@@ -175,6 +182,15 @@ const ProjectComponent: FC<ProjectProps> = ({
           </button>
         )}
       </div>
+      <ConfirmDialog
+        open={isConfirmOpen}
+        title="Delete project"
+        description="Are you sure you want to delete this project? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
     </div>
   );
 };
