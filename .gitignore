@@ -39,8 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-<<<<<<< HEAD
-=======
 
-/app/generated/prisma
->>>>>>> 1de0301 (Setting up authentication with Clerk)
+#prisma
+/prisma/dev.db

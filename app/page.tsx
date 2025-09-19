@@ -28,7 +28,7 @@ export default function Home() {
       setProjects(myproject);
       console.log(myproject);
     } catch (error) {
-      console.error("Erreur lors du chargement des projets:", error);
+      console.error("Error loading projects:", error);
     }
   };
 
