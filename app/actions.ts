@@ -197,3 +197,57 @@ export async function getProjectsAssociatedWithUser(email: string) {
     throw new Error();
   }
 }
+
+export async function deleteTaskById(taskId: string) {
+  try {
+    await prisma.task.delete({
+      where: {
+        id: taskId,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    throw new Error();
+  }
+}
+
+export async function getProjectInfo(idProject: string, details: boolean) {
+  try {
+    const project = await prisma.project.findUnique({
+      where: {
+        id: idProject,
+      },
+      include: details
+        ? {
+            tasks: {
+              include: {
+                user: true,
+                createdBy: true,
+              },
+            },
+            users: {
+              select: {
+                user: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                  },
+                },
+              },
+            },
+            createdBy: true,
+          }
+        : undefined,
+    });
+
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    return project;
+  } catch (error) {
+    console.error(error);
+    throw new Error();
+  }
+}

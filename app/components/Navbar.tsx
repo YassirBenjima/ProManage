@@ -52,7 +52,7 @@ const Navbar = () => {
             <FolderGit2 className="w-6 h-6" />
           </div>
           <span className="ml-3 text-3xl">
-            Pro <span className="text-primary font-bold">Manger</span>
+            Pro <span className="text-primary font-bold">Manage</span>
           </span>
         </div>
         <button
