@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import Image from "next/image";
+import { useUser } from "@clerk/nextjs";
 
 interface UserInfoProps {
   role: string;
@@ -8,12 +9,14 @@ interface UserInfoProps {
 }
 
 const UserInfo: FC<UserInfoProps> = ({ role, email, name }) => {
+  const { user } = useUser();
+
   return (
     <div className="flex items-center">
       <div className="avatar">
         <div className="ring-primary ring-offset-base-100 w-9 rounded-full ring ring-offset-2 ">
           <Image
-            src={"/profile.avif"}
+            src={user?.imageUrl || "/profile.avif"}
             alt={"profile image"}
             height={500}
             width={500}

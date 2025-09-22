@@ -251,3 +251,75 @@ export async function getProjectInfo(idProject: string, details: boolean) {
     throw new Error();
   }
 }
+
+export async function createTask(
+  name: string,
+  description: string,
+  dueDate: Date | null,
+  projectId: string,
+  createdByEmail: string,
+  assignToEmail: string | undefined
+) {
+  try {
+    const createdBy = await prisma.user.findUnique({
+      where: { email: createdByEmail },
+    });
+
+    if (!createdBy) {
+      throw new Error(`User with email ${createdByEmail} not found`);
+    }
+
+    let assignedUserId = createdBy.id;
+
+    if (assignToEmail) {
+      const assignedUser = await prisma.user.findUnique({
+        where: { email: assignToEmail },
+      });
+      if (!assignedUser) {
+        throw new Error(`User with email ${assignToEmail} not found`);
+      }
+      assignedUserId = assignedUser.id;
+    }
+
+    const newTask = await prisma.task.create({
+      data: {
+        name,
+        description,
+        dueDate,
+        projectId,
+        createdById: createdBy.id,
+        userId: assignedUserId,
+      },
+    });
+
+    console.log("Task created successfully:", newTask);
+    return newTask;
+  } catch (error) {
+    console.error(error);
+    throw new Error();
+  }
+}
+
+export async function getProjectUsers(idProject: string) {
+  try {
+    const projectWithUsers = await prisma.project.findUnique({
+      where: {
+        id: idProject,
+      },
+      include: {
+        users: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    const users =
+      projectWithUsers?.users.map((projectUser) => projectUser.user) || [];
+    return users;
+  } catch (error) {
+    console.error(error);
+    throw new Error();
+  }
+}
